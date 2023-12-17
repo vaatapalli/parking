@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ParkingRepository extends JpaRepository<Slot,Integer> {
+public interface ParkingRepository extends JpaRepository<Slot, Integer> {
     List<Slot> findByIsEmptyTrue();
 }

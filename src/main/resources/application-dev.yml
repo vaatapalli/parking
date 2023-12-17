@@ -1,0 +1,32 @@
+spring:
+  datasource:
+    platform: h2
+    url: jdbc:h2:mem:vehicle-parking-service;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# enable H2 web console and set url for web console
+# http://localhost:8080/h2-console
+
+# By Default INFO
+logging:
+  level:
+    root: INFO
+
+hour:
+  rate: 2
+
+parking:
+  slots:
+    number: 3
+
+server:
+  port: 8080

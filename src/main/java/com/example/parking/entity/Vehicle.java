@@ -1,6 +1,5 @@
 package com.example.parking.entity;
 
-
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotBlank;
 
@@ -11,8 +10,10 @@ public class Vehicle {
     private String vehicleNumber;
     @NotBlank(message = "vehicle type mandatory")
     private String vehicleType;
+
     public Vehicle() {
     }
+
     public String getVehicleNumber() {
         return vehicleNumber;
     }

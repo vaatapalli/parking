@@ -7,6 +7,7 @@ import com.example.parking.exception.InvalidSlotNumberException;
 import com.example.parking.exception.ParkingFullException;
 
 public interface ParkingService {
-	Ticket park(Vehicle vehicle) throws ParkingFullException;
-	String unPark(int slotNumber) throws InvalidSlotNumberException;
+    Ticket park(Vehicle vehicle) throws ParkingFullException;
+
+    String unPark(int slotNumber) throws InvalidSlotNumberException;
 }

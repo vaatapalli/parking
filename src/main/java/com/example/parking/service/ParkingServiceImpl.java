@@ -13,21 +13,21 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ParkingServiceImpl implements ParkingService {
-
     Logger logger = LoggerFactory.getLogger(ParkingServiceImpl.class);
-
     @Value("${hour.rate}")
     private int ratePerHour;
     @Autowired
     ParkingRepository parkingRepository;
-
     @Autowired
     InvoiceRepository invoiceRepository;
 
@@ -41,9 +41,9 @@ public class ParkingServiceImpl implements ParkingService {
         List<Slot> slots = parkingRepository.findByIsEmptyTrue();
         List<Slot> availableSlots = slots.stream().filter(Slot::isEmpty).sorted(Comparator.comparing(Slot::getSlotNumber)).toList();
         logger.info("Total Available slots size - {}", availableSlots.size());
-        if (availableSlots.size() > 0) {
 
-            LocalDateTime localDateTimeNow=LocalDateTime.now();
+        if (availableSlots.size() > 0) {
+            LocalDateTime localDateTimeNow = LocalDateTime.now();
             Ticket ticket = new Ticket();
             ticket.setLocalDateTime(localDateTimeNow);
             ticket.setVehicle(vehicle);
@@ -54,20 +54,17 @@ public class ParkingServiceImpl implements ParkingService {
             pickSlot.setTicket(ticket);
 
             Slot slot = parkingRepository.save(pickSlot);
-
             logger.info("Slot number {} allocated successfully", slot.getSlotNumber());
             return ticket;
         }
-
         throw new ParkingFullException("Sorry, Parking slots are full");
 
     }
 
 
-
     @Override
+    @Transactional
     public String unPark(int slotNumber) throws InvalidSlotNumberException {
-
 
         Optional<Slot> slotData = parkingRepository.findById(slotNumber);
 
@@ -78,13 +75,14 @@ public class ParkingServiceImpl implements ParkingService {
             Ticket ticket = slot.getTicket();
 
             if (ticket != null) {
-               LocalDateTime localDateTimeNow=LocalDateTime.now();
-                double hours = getParkingTime(ticket.getLocalDateTime(), localDateTimeNow);
+                LocalDateTime localDateTimeNow = LocalDateTime.now();
+                double hours = Duration.between(ticket.getLocalDateTime(), localDateTimeNow).toHours();
                 double charges = ratePerHour * hours;
                 logger.info("Today per hour rate - £{}", slot.getSlotNumber());
 
                 slot.setEmpty(true);
                 slot.setTicket(null);
+
                 parkingRepository.save(slot);
                 logger.info("Slot number {} de-allocated", slot.getSlotNumber());
 
@@ -98,23 +96,14 @@ public class ParkingServiceImpl implements ParkingService {
                 invoice.setNoOfHours(hours);
                 invoice.setExitTime(localDateTimeNow);
 
-
                 Invoice invoiceData = invoiceRepository.save(invoice);
                 logger.info("Invoice data saved successfully - {} ", invoiceData);
 
                 return charge;
             }
-
         }
         throw new InvalidSlotNumberException("Invalid Slot Number");
 
-    }
-
-    public double getParkingTime(LocalDateTime startDate, LocalDateTime endDate) {
-
-        System.out.println(startDate+" "+endDate);
-        long hours= Duration.between(startDate, endDate).toHours();
-        return hours;
     }
 
 }

@@ -4,14 +4,11 @@ package com.example.parking.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
-
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name = "ticket")
 public class Ticket {
-
     @Id
     @Column(name = "slot_id")
     private int slotNumber;

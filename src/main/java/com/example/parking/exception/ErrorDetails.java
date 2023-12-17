@@ -1,7 +1,6 @@
 package com.example.parking.exception;
 
 public class ErrorDetails {
-
     private String message;
     private int status;
 
