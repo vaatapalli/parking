@@ -1,28 +1,39 @@
 package com.example.parking.entity;
 
+
+import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.NotBlank;
+
+
+@Embeddable
 public class Vehicle {
+    @NotBlank(message = "vehicle number mandatory")
+    private String vehicleNumber;
+    @NotBlank(message = "vehicle type mandatory")
+    private String vehicleType;
+    public Vehicle() {
+    }
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
 
-	private String vehicleNumber;
-	private VehicleType vehicleType;
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
 
-	public Vehicle(String vehicleNumber, VehicleType vehicleType) {
-		this.vehicleNumber = vehicleNumber;
-		this.vehicleType = vehicleType;
-	}
+    public String getVehicleType() {
+        return vehicleType;
+    }
 
-	public String getVehicleNumber() {
-		return vehicleNumber;
-	}
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
 
-	public void setVehicleNumber(String vehicleNumber) {
-		this.vehicleNumber = vehicleNumber;
-	}
-
-	public VehicleType getVehicleType() {
-		return vehicleType;
-	}
-
-	public void setVehicleType(VehicleType vehicleType) {
-		this.vehicleType = vehicleType;
-	}
+    @Override
+    public String toString() {
+        return "Vehicle{" +
+                "vehicleNumber='" + vehicleNumber + '\'' +
+                ", vehicleType='" + vehicleType + '\'' +
+                '}';
+    }
 }

@@ -1,27 +1,33 @@
 package com.example.parking.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
+
+
 import java.time.LocalDateTime;
+import java.util.Date;
 
+@Entity
+@Table(name = "ticket")
 public class Ticket {
+
+    @Id
+    @Column(name = "slot_id")
     private int slotNumber;
-    private String vehicleNumber;
+    @MapsId
+    @OneToOne
+    @JsonBackReference
+    @JoinColumn(name = "slot_id")
+    private Slot slot;
+
+    @Column(name = "date")
     private LocalDateTime localDateTime;
-    private VehicleType vehicleType;
+    @Embedded
+    private Vehicle vehicle;
 
-    public Ticket(int slotNumber, String vehicleNumber, VehicleType vehicleType, LocalDateTime localDateTime) {
-        super();
-        this.slotNumber = slotNumber;
-        this.vehicleNumber = vehicleNumber;
-        this.localDateTime = localDateTime;
-        this.setVehicleType(vehicleType);
-    }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
-
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public Ticket() {
     }
 
     public int getSlotNumber() {
@@ -32,26 +38,27 @@ public class Ticket {
         this.slotNumber = slotNumber;
     }
 
-    public String getVehicleNumber() {
-        return vehicleNumber;
+    public Slot getSlot() {
+        return slot;
     }
 
-    public void setVehicleNumber(String vehicleNumber) {
-        this.vehicleNumber = vehicleNumber;
+    public void setSlot(Slot slot) {
+        this.slot = slot;
     }
 
-    public VehicleType getVehicleType() {
-        return vehicleType;
+    public LocalDateTime getLocalDateTime() {
+        return localDateTime;
     }
 
-    public void setVehicleType(VehicleType vehicleType) {
-        this.vehicleType = vehicleType;
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+        this.localDateTime = localDateTime;
     }
 
-    @Override
-    public String toString() {
-        return "Ticket [slotNumber=" + slotNumber + ", vehicleNumber=" + vehicleNumber + ", localDateTime=" + localDateTime
-                + ", vehicleType=" + vehicleType + "]";
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
 }

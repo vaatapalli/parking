@@ -1,29 +1,36 @@
 package com.example.parking.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "slot")
 public class Slot {
-    private Integer number;
+    @Id
+    @Column(name = "slot_number")
+    private int slotNumber;
+    @Column(name = "is_empty")
     private boolean isEmpty;
-    private Vehicle parkVehicle;
 
-    public Slot(Integer number) {
-        this.number = number;
-        isEmpty=true;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            mappedBy = "slot"
+    )
+    @JsonManagedReference
+    @JoinColumn(name = "ticket_slotNumber")
+    private Ticket ticket;
+
+    public Slot() {
     }
 
-    public Vehicle getParkVehicle() {
-        return parkVehicle;
+    public int getSlotNumber() {
+        return slotNumber;
     }
 
-    public void setParkVehicle(Vehicle parkVehicle) {
-        this.parkVehicle = parkVehicle;
-    }
-
-    public Integer getSlotNumber() {
-        return number;
-    }
-
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setSlotNumber(int slotNumber) {
+        this.slotNumber = slotNumber;
     }
 
     public boolean isEmpty() {
@@ -34,14 +41,12 @@ public class Slot {
         isEmpty = empty;
     }
 
-    public void vacateSlot() {
-        parkVehicle = null;
-        this.isEmpty = true;
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    public void occupySlot(Vehicle parkVehicle) {
-        this.parkVehicle = parkVehicle;
-        this.isEmpty = false;
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 
 }
