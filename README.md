@@ -28,7 +28,7 @@ Initially app loads 100 slots Along with their
 @slotNumber, @isEmpty(By defaults value as TRUE), Ticket =null
 
 Parking request will take Vehicle information and allocates the available slot.
-Also give you a ticket.
+Also gives you a ticket.
 
 
 Parking Request
@@ -38,6 +38,8 @@ Parking Request
 http://localhost:8080/park-vehicle
 
 **Sample Request (Vehicle Information)**
+
+![img_7.png](img_7.png)
 
 {
 "vehicleNumber":"123",

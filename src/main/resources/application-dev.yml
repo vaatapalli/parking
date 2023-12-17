@@ -26,7 +26,7 @@ hour:
 
 parking:
   slots:
-    number: 3
+    number: 100
 
 server:
   port: 8080
