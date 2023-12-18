@@ -30,6 +30,10 @@ Initially app loads 100 slots Along with their
 Parking request will take Vehicle information and allocates the available slot.
 Also gives you a ticket.
 
+@Get All slots :
+--------------
+http://localhost:8080/parking-slots
+
 
 Parking Request
 -------
